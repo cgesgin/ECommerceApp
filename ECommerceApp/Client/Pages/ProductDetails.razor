@@ -1,0 +1,47 @@
+﻿@page "/product/{id:int}"
+@using ECommerceApp.Client.Services.ProductService
+@using ECommerceApp.Core.Models
+@inject IProductService ProductService
+
+@if (product == null)
+{
+    <span>@message</span>
+}
+else
+{
+    <div class="media">
+        <div class="media-img-wrapper mr-2">
+                <img class="media-img" src="@product.ImageUrl" alt="@product.Title" />
+        </div>
+        <div class="media-body">
+                <h4 class="mb-0">@product.Title</h4>
+            <p>@product.Description</p>
+            <h5 class="price">
+                @*product.Price₺*@
+            </h5>
+        </div>
+    </div>
+}
+
+@code {
+    private Product? product;
+    
+    private string? message;
+
+    [Parameter]
+    public int Id{ get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        message = "Yükleniyor...";
+        var result = await ProductService.GetByIdAsync(Id);
+        if (result!=null)
+        {
+            product = result.Data;
+        }
+        else
+        {
+            message = "Ürün bulunamadı";
+        }
+    }
+}

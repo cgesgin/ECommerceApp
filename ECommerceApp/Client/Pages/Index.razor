@@ -1,0 +1,18 @@
+﻿@page "/"
+@page "/{category}"
+@using ECommerceApp.Client.Services.ProductService
+@inject IProductService ProductService
+
+<PageTitle>My Shop</PageTitle>
+
+<ProductList />
+@code{
+    [Parameter]
+    public string  category { get; set; } = null;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await ProductService.GetAll(category);
+    }
+
+}
