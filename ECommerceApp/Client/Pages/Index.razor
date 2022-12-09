@@ -1,18 +1,39 @@
 ﻿@page "/"
+@page "/search/{searchText}/{page:int}"
 @page "/{category}"
 @using ECommerceApp.Client.Services.ProductService
 @inject IProductService ProductService
 
-<PageTitle>My Shop</PageTitle>
-
-<ProductList />
+<PageTitle>İyi Alışverlişler</PageTitle>
+@if (searchText==null && category==null)
+{
+    <FeaturedProducts/>
+}
+else
+{
+    <ProductList />
+}
 @code{
     [Parameter]
-    public string  category { get; set; } = null;
+    public string  ?category { get; set; } = null;
+
+    [Parameter]
+    public string  ?searchText { get; set; } = null;
+
+    [Parameter]
+    public int  page { get; set; } = 1;
 
     protected override async Task OnParametersSetAsync()
     {
-        await ProductService.GetAll(category);
+        if (searchText!=null)
+        {
+            await ProductService.SearchProducts(searchText,page);
+        }
+        else
+        {
+            await ProductService.GetAll(category);
+        }
+        
     }
 
 }

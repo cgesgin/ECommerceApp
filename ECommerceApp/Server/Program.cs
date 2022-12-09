@@ -27,18 +27,21 @@ builder.Services.AddDbContext<AppDbContext>(
         {
             x.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name);
         })
-    );
+    ); 
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
 builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 builder.Services.AddScoped(typeof(IProductService), typeof(ProductService));
 builder.Services.AddScoped(typeof(ICategoryService), typeof(CategoryService));
+builder.Services.AddScoped(typeof(IBasketService), typeof(BasketService));
 builder.Services.AddScoped(typeof(IProductRepository), typeof(ProductRepository));
 
 
 var app = builder.Build();
 app.UseSwaggerUI();
+
+app.UseCors(options=>options.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader());
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

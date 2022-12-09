@@ -8,6 +8,11 @@ namespace ECommerceApp.Client.Services.ProductService
     {
         public List<Product> Products { get ; set ; }
         public HttpClient _httpClient { get; set; }
+        public string Message { get; set; } ="Ürünler Yükleniyor...";
+        public int CurrentPage { get; set; } = 1;
+        public int PageCount { get; set; } = 0;
+        public string LastSearchText { get; set; }=String.Empty;
+
         public event Action ProductsChanged;
         public ProductService(HttpClient httpClient) 
         {
@@ -17,12 +22,20 @@ namespace ECommerceApp.Client.Services.ProductService
 
         public async Task GetAll(string ?category = null)
         {
-            var result = category == null? 
-                await _httpClient.GetFromJsonAsync<ResponseDto<List<Product>>>("api/Product") : 
-                await _httpClient.GetFromJsonAsync<ResponseDto<List<Product>>>($"api/Product/Category/{category}") ;
+            var result = category == null ? 
+                await _httpClient.GetFromJsonAsync<ResponseDto<List<Product>>>("api/Product/featured") : 
+                await _httpClient.GetFromJsonAsync<ResponseDto<List<Product>>>($"api/Product/category/{category}") ;
             if (result != null && result.Data!=null)
             {
                 Products = result.Data;
+            }
+
+            CurrentPage = 1;
+            PageCount = 0;
+
+            if (Products.Count == 0)
+            {
+                Message = "Ürün Bulunamadı";
             }
             ProductsChanged.Invoke();
         }
@@ -32,5 +45,34 @@ namespace ECommerceApp.Client.Services.ProductService
             var result = await _httpClient.GetFromJsonAsync<ResponseDto<Product>>($"api/Product/{id}");
             return result;
         }
+
+        public async Task SearchProducts(string searchText,int page)
+        {
+            LastSearchText = searchText;
+            var result  = await _httpClient
+                .GetFromJsonAsync<ResponseDto<ProductSearchResultDto>>($"api/Product/search/{searchText}/{page}");
+            if (result != null && result.Data != null)
+            {
+                Products = result.Data.Products;
+                CurrentPage = result.Data.CurrentPage;
+                PageCount=result.Data.Pages;
+            }
+            if (Products.Count==0)
+            {
+                Message = "Ürün Bulunamadı.";
+            }
+
+           
+
+            ProductsChanged?.Invoke();
+        }
+
+        public async Task<List<string>> GetProductSearchSuggestion(string searchText)
+        {
+            var result = await _httpClient.GetFromJsonAsync<ResponseDto<List<string>>>($"api/Product/searchsuggestions/{searchText}");
+            return result.Data;
+        }
+
+        
     }
 }

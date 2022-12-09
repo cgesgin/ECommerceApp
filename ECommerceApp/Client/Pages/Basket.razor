@@ -1,0 +1,77 @@
+﻿@page "/basket"
+@using ECommerceApp.Client.Services.BasketService
+@using ECommerceApp.Core.Dto
+@inject IBasketService BasketService
+
+<PageTitle>Sepet</PageTitle>
+<h3>Sepet</h3>
+@if (basketProducts == null || basketProducts.Count==0)
+{
+    <span>@message</span>
+}
+else
+{
+    <div>
+        @foreach (var item in basketProducts)
+       {
+           <div class="container">
+               <div class="image-wrapper">
+                   <img src="@item.ImageUrl" class="image"/>
+               </div>
+               <div class="name">
+                   <h5><a href="/product/@item.ProductId">@item.Title</a></h5>
+                   <span>@item.ProductType</span>
+                    <br/><br/>
+                    <input type="number" 
+                        value="@item.Quantity"
+                        @onchange="@((ChangeEventArgs e)=>UpdateQuantity(e,item))"
+                        class="form-control input-quantity"
+                        min="1"/>
+                   <button class="btn btn-danger"  @onclick="@(()=>RemoveProductFromBasket(item.ProductId,item.ProductTypeId))">Sil</button>
+               </div>
+               <div class="basket-product-price">₺@(item.Price * item.Quantity)</div>
+           </div>
+       }
+       <div class="basket-product-price">
+           Toplam(@basketProducts.Count):₺@basketProducts.Sum(x=>x.Price* x.Quantity);
+       </div>
+    </div>
+}
+@code{
+    List<BasketProductDto> basketProducts = null;
+
+    string message = "sepetiniz boş";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadBasket();  
+    }
+
+    private async Task RemoveProductFromBasket(int productId,int ProductTypeId)
+    {
+        await BasketService.RemoveProductFromBasket(productId,ProductTypeId);
+        await LoadBasket();
+    }
+
+    private async Task LoadBasket()
+    {
+         if ((await BasketService.GetBasketItemsAsync()).Count==0)
+        {
+            message = "Sepette ürün bulunamadı.";  
+            basketProducts = new List<BasketProductDto>();
+        }
+        else
+        {
+            basketProducts = await BasketService.GetBasketProducts();
+        }
+    } 
+
+     private async Task UpdateQuantity(ChangeEventArgs e, BasketProductDto product)
+    {
+        product.Quantity = int.Parse(e.Value.ToString());
+        if (product.Quantity < 1)
+            product.Quantity = 1;
+        await BasketService.UpdateQuantity(product);
+    }
+
+}

@@ -1,0 +1,29 @@
+﻿@using ECommerceApp.Client.Services.BasketService
+@using ECommerceApp.Core.Dto
+
+@inject IBasketService BasketService
+@inject ISyncLocalStorageService LocalStrage
+@implements IDisposable
+
+<a href="basket" class="btn btn-info">
+    <i class="oi oi-basket"></i>
+    <span class="badge">@GetCartItemsCount()</span>
+</a>
+
+@code {
+    private int GetCartItemsCount()
+    {
+        var basket = LocalStrage.GetItem<List<BasketItemDto>>("basket");
+        return basket != null ? basket.Count : 0;
+    }
+
+    protected override void OnInitialized()
+    {
+        BasketService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        BasketService.OnChange -= StateHasChanged;
+    } 
+}

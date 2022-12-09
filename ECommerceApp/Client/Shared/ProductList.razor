@@ -1,10 +1,13 @@
-﻿@using ECommerceApp.Client.Services.ProductService
+﻿@using ECommerceApp.Client.Services.BasketService
+@using ECommerceApp.Client.Services.ProductService
+@using ECommerceApp.Core.Models
+
 @inject IProductService ProductService
 @implements IDisposable
 
 @if (ProductService.Products == null || ProductService.Products.Count == 0)
 {
-    <span>Yükleniyor :...</span>
+    <span>@ProductService.Message</span>
 }
 else
 {
@@ -18,25 +21,49 @@ else
                     </a>
                 </div>
                 <div class="media-body">
-                     <a href="/product/@product.Id">
+                    <a href="/product/@product.Id">
                         <h4 class="mb-0">@product.Title</h4>
                     </a>
                     <p>@product.Description</p>
                     <h5 class="price">
-                        @*product.Price₺*@
+                        @GetPriceText(product)
                     </h5>
                 </div>
             </li>
         }
     </ul>
+    for (int i = 1; i <= ProductService.PageCount; i++)
+    {
+        <a class="btn
+            @(i == ProductService.CurrentPage ? "btn-info" : "btn-outline-info")
+            page-selection"
+        href="/search/@ProductService.LastSearchText/@i">@i</a>
+    }
 }
+
 @code {
     protected override void OnInitialized()
     {
         ProductService.ProductsChanged += StateHasChanged;
     }
+
     public void Dispose()
     {
         ProductService.ProductsChanged -= StateHasChanged;
+    }
+
+    private string GetPriceText(Product product)
+    {
+        var variants = product.ProductVariants;
+        if (variants.Count == 0)
+        {
+            return string.Empty;
+        }
+        else if (variants.Count == 1)
+        {
+            return $"₺{variants[0].Price}";
+        }
+        decimal minPrice = variants.Min(v => v.Price);
+        return $"Başlayan Fiyatlarla ₺{minPrice}";
     }
 }

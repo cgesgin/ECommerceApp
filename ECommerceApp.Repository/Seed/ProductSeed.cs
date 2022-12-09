@@ -20,7 +20,8 @@ namespace ECommerceApp.Repository.Seed
                         Title = "Ready Player One-1",
                         Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                         ImageUrl = "https://upload.wikimedia.org/wikipedia/en/a/a4/Ready_Player_One_cover.jpg",
-                        CategoryId= 1,
+                        CategoryId = 1,
+                        Featured = true
                     },
                     new Product
                     {
@@ -29,9 +30,18 @@ namespace ECommerceApp.Repository.Seed
                         Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                         ImageUrl = "https://upload.wikimedia.org/wikipedia/en/a/a4/Ready_Player_One_cover.jpg",
                         CategoryId = 1,
-                    }
+                    },
+                     new Product
+                     {
+                         Id = 3,
+                         Title = "Ready player one : director's Cut",
+                         Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                         ImageUrl = "https://upload.wikimedia.org/wikipedia/en/a/a4/Ready_Player_One_cover.jpg",
+                         CategoryId = 1,
+                         Featured = true
+                     }
 
-                );
+                ) ;
         }
     }
 }
