@@ -1,6 +1,13 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿@using Microsoft.AspNetCore.Components.Authorization
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(ShopLayout)" />
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(ShopLayout)" >
+            <NotAuthorized>
+                <h3>Yetkisiz Giriş </h3>
+                <a href="login">Giriş yap</a> ya da <a href="register">Kayıt ol</a>
+            </NotAuthorized>
+            </AuthorizeRouteView>
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>
@@ -10,3 +17,5 @@
         </LayoutView>
     </NotFound>
 </Router>
+</CascadingAuthenticationState>/>
+

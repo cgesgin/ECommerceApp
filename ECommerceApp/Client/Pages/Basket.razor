@@ -49,7 +49,7 @@ else
 
     private async Task RemoveProductFromBasket(int productId,int ProductTypeId)
     {
-        await BasketService.RemoveProductFromBasket(productId,ProductTypeId);
+        await BasketService .RemoveProductFromBasket(productId,ProductTypeId);
         await LoadBasket();
     }
 

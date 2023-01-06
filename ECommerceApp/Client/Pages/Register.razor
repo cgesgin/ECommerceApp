@@ -1,0 +1,56 @@
+﻿@page "/register"
+@using ECommerceApp.Client.Services.AuthService
+@using ECommerceApp.Core.Dto
+@inject IAuthService AuthService
+
+<PageTitle>Kayıt Sayfası</PageTitle>
+
+<h3>Kayıt</h3>
+
+<EditForm Model="user" OnValidSubmit="HandleRegistration">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label for="email">Email</label>
+        <InputText id="email" @bind-Value="user.Email" class="form-control" />
+        <ValidationMessage For="@(() => user.Email)" />
+    </div>
+    <div class="mb-3">
+        <label for="password">Password</label>
+        <InputText id="password" @bind-Value="user.Password" class="form-control" type="password" />
+        <ValidationMessage For="@(() => user.Password)" />
+    </div>
+    <div class="mb-3">
+        <label for="confirmPassword">Confirm Password</label>
+        <InputText id="confirmPassword" @bind-Value="user.PasswordConfirm" class="form-control" type="password" />
+        <ValidationMessage For="@(() => user.PasswordConfirm)" />
+    </div>
+    <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+    <br/>
+    <div class="@messageCssClass">
+        <span>@message</span>
+    </div>
+</EditForm>
+
+@code {
+    UserRegisterDto user = new UserRegisterDto();
+
+    string message = string.Empty;
+
+    string messageCssClass = string.Empty;
+
+    async Task HandleRegistration()
+    {
+        var result = await AuthService.Register(user);
+
+        if (result.Data.Equals("Success"))
+        {
+            messageCssClass = "text-success";
+            message = result.Data;
+        }
+        else
+        {
+             messageCssClass = "text-danger";
+            message = result.Data;
+        }
+    }
+}
