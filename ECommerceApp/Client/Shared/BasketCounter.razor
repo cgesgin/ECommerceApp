@@ -1,5 +1,5 @@
 ﻿@using ECommerceApp.Client.Services.BasketService
-@using ECommerceApp.Core.Dto
+@using ECommerceApp.Core.Models
 
 @inject IBasketService BasketService
 @inject ISyncLocalStorageService LocalStrage
@@ -13,8 +13,8 @@
 @code {
     private int GetCartItemsCount()
     {
-        var basket = LocalStrage.GetItem<List<BasketItemDto>>("basket");
-        return basket != null ? basket.Count : 0;
+        var count = LocalStrage.GetItem<int>("basketItemsCount");
+        return count;
     }
 
     protected override void OnInitialized()

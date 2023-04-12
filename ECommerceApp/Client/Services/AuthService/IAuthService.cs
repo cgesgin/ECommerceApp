@@ -7,5 +7,6 @@ namespace ECommerceApp.Client.Services.AuthService
         Task<ResponseDto<string>> Register(UserRegisterDto userRegisterDto);
         Task<ResponseDto<string>> Login(UserLoginDto userLoginDto);
         Task<ResponseDto<bool>> ChangePassword(UserChangePasswordDto userChangePasswordDto);
+        Task<bool> GetIsUserAuthentication();
     }
 }

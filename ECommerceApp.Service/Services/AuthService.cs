@@ -3,7 +3,7 @@ using ECommerceApp.Core.Repositories;
 using ECommerceApp.Core.Service;
 using ECommerceApp.Core.UnitOfWorks;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;//
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;

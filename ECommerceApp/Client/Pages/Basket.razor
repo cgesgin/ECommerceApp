@@ -1,13 +1,20 @@
 ﻿@page "/basket"
 @using ECommerceApp.Client.Services.BasketService
+@using ECommerceApp.Client.Services.OrderService;
 @using ECommerceApp.Core.Dto
+
 @inject IBasketService BasketService
+@inject IOrderService OrderService
 
 <PageTitle>Sepet</PageTitle>
 <h3>Sepet</h3>
 @if (basketProducts == null || basketProducts.Count==0)
 {
     <span>@message</span>
+}
+else if (orderPlaced)
+{
+    <span>Sipariş Alındı. Siparişler için <a href="orders">Tıklayınız</a></span>
 }
 else
 {
@@ -35,15 +42,19 @@ else
        <div class="basket-product-price">
            Toplam(@basketProducts.Count):₺@basketProducts.Sum(x=>x.Price* x.Quantity);
        </div>
+
     </div>
+    <button @onclick="PlaceOrder" class="btn alert-success float-end mt-1">Şipariş Ver</button>
 }
 @code{
     List<BasketProductDto> basketProducts = null;
 
     string message = "sepetiniz boş";
+    bool orderPlaced = false;
 
     protected override async Task OnInitializedAsync()
     {
+        orderPlaced = false;
         await LoadBasket();  
     }
 
@@ -55,23 +66,27 @@ else
 
     private async Task LoadBasket()
     {
-         if ((await BasketService.GetBasketItemsAsync()).Count==0)
+        await BasketService.BasketItemsCount();
+        basketProducts = await BasketService.GetBasketProducts();
+        if (basketProducts == null || basketProducts.Count == 0)
         {
-            message = "Sepette ürün bulunamadı.";  
-            basketProducts = new List<BasketProductDto>();
+            message = "Sepette ürün bulunamadı.";
         }
-        else
-        {
-            basketProducts = await BasketService.GetBasketProducts();
-        }
-    } 
+    }
 
-     private async Task UpdateQuantity(ChangeEventArgs e, BasketProductDto product)
+    private async Task UpdateQuantity(ChangeEventArgs e, BasketProductDto product)
     {
         product.Quantity = int.Parse(e.Value.ToString());
         if (product.Quantity < 1)
             product.Quantity = 1;
         await BasketService.UpdateQuantity(product);
+    }
+
+    private async Task PlaceOrder()
+    {
+        await OrderService.PlaceOrder();
+        await BasketService.BasketItemsCount();
+        orderPlaced = true;
     }
 
 }

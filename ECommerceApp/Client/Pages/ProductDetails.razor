@@ -86,7 +86,7 @@ else
     private async Task AddToBasket()
     {
         var productVarriant = GetSelectedVarriant();
-        var basketItem = new BasketItemDto
+        var basketItem = new BasketItem
             {
                 ProductId = productVarriant.ProductId,
                 ProductTypeId= productVarriant.ProductTypeId

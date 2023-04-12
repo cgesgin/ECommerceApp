@@ -15,6 +15,7 @@ namespace ECommerceApp.Server.Controllers
         public AuthController(IAuthService service)
         {
             _service = service;
+
         }
 
         [HttpPost("register")]

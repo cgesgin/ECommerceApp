@@ -1,0 +1,43 @@
+﻿@page "/orders"
+@using ECommerceApp.Client.Services.OrderService;
+@using ECommerceApp.Core.Dto;
+
+@inject IOrderService OrderService
+
+<PageTitle>Siparisler</PageTitle>
+<h3>Siparisler</h3>
+@if (orders == null)
+{
+    <span>Siparişler yükleniyor</span>
+}
+else if (orders.Count <= 0)
+{
+    <span>Henüz Sipariş Vermediniz</span>
+}
+else
+{
+    foreach (var order in orders)
+    {
+        <div class="container">
+            <div class="image-wrapper">
+                <img src="@order.Productİmage" class="image" />
+            </div>
+            <div class="details">
+                <h4>@order.Product</h4>
+                <span>@order.OrderDate</span><br />
+                <a href="orders/@order.Id">Detaylı Göster</a>
+            </div>
+            <div class="order-price">$@order.TotalPrice</div>
+        </div>
+    }
+}
+
+
+@code {
+    List<OrderShowDto> orders = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        orders = await OrderService.GetOrders();
+    }
+}
