@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerceApp.Core.Dto
+namespace ECommerceApp.Core.Models
 {
-    public class BasketItemDto
+    public class BasketItem
     {
+        public int UserId { get; set; }
         public int ProductId { get; set; }
         public int ProductTypeId { get; set; }
         public int Quantity { get; set; } = 1;

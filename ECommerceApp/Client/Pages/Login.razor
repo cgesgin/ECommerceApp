@@ -1,9 +1,11 @@
 ﻿@page "/login"
 @using ECommerceApp.Client.Services.AuthService
+@using ECommerceApp.Client.Services.BasketService
 @using ECommerceApp.Core.Dto
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.WebUtilities
 @inject IAuthService AuthService
+@inject IBasketService BasketService
 @inject ILocalStorageService LocalStorageService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -59,6 +61,8 @@
             errorMessage = string.Empty;
             await LocalStorageService.SetItemAsStringAsync("authToken", result.Data);
             await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            await BasketService.StoreBasketItems(true);
+            await BasketService.BasketItemsCount();
             NavigationManager.NavigateTo(returnUrl);
         }
         else
