@@ -5,16 +5,13 @@
 
 @inject IBasketService BasketService
 @inject IOrderService OrderService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Sepet</PageTitle>
 <h3>Sepet</h3>
 @if (basketProducts == null || basketProducts.Count==0)
 {
     <span>@message</span>
-}
-else if (orderPlaced)
-{
-    <span>Sipariş Alındı. Siparişler için <a href="orders">Tıklayınız</a></span>
 }
 else
 {
@@ -50,11 +47,9 @@ else
     List<BasketProductDto> basketProducts = null;
 
     string message = "sepetiniz boş";
-    bool orderPlaced = false;
 
     protected override async Task OnInitializedAsync()
     {
-        orderPlaced = false;
         await LoadBasket();  
     }
 
@@ -84,9 +79,9 @@ else
 
     private async Task PlaceOrder()
     {
-        await OrderService.PlaceOrder();
-        await BasketService.BasketItemsCount();
-        orderPlaced = true;
+        string url = await OrderService.PlaceOrder();
+        NavigationManager.NavigateTo(url);
+
     }
 
 }

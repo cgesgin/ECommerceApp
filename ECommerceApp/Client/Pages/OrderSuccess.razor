@@ -1,0 +1,15 @@
+﻿@page "/order-success"
+@using ECommerceApp.Client.Services.BasketService;
+@inject IBasketService BasketService;
+
+<PageTitle>Teşekkürler.</PageTitle>
+<h3>Teşekkürler.</h3>
+
+<span>Sipariş İçin teşekkürler. Siparişleriniz için <a href="orders">tıklayınız</a>. </span>
+
+@code{
+    protected override async Task OnInitializedAsync()
+    {
+        await BasketService.BasketItemsCount();
+    }
+}

@@ -43,6 +43,8 @@ builder.Services.AddScoped(typeof(IProductRepository), typeof(ProductRepository)
 builder.Services.AddScoped(typeof(IBasketItemRepository), typeof(BasketItemRepository));
 builder.Services.AddScoped(typeof(IOrderRepository), typeof(OrderRepository));
 builder.Services.AddScoped(typeof(IOrderService), typeof(OrderService));
+builder.Services.AddScoped(typeof(IPaymentService), typeof(PaymentService));
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt =>

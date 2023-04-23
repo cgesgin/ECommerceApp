@@ -2,6 +2,7 @@
 using ECommerceApp.Core.Repositories;
 using ECommerceApp.Core.Service;
 using ECommerceApp.Core.UnitOfWorks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -46,9 +47,9 @@ namespace ECommerceApp.Service.Services
             return true;
         }
 
-        public Task<User> GetUserByEmail(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
-            throw new NotImplementedException();
+            return await _authRepository.GetUserByEmail(email);
         }
 
         public string GetUserEmail()

@@ -12,5 +12,7 @@ namespace ECommerceApp.Core.Repositories
         Task<bool> UserExists(string email);
         Task<User> FindEmail(string email);
         Task<User> FindUserById(int id);
+        Task<User> GetUserByEmail(string email);
+
     }
 }

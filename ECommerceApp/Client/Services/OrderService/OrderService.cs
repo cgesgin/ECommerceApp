@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Json;
+using static System.Net.WebRequestMethods;
 
 namespace ECommerceApp.Client.Services.OrderService
 {
@@ -30,15 +31,17 @@ namespace ECommerceApp.Client.Services.OrderService
             return result.Data;
         }
 
-        public async Task PlaceOrder()
+        public async Task<string> PlaceOrder()
         {
-            if (await this.GetIsAuthenticated())
+            if (await GetIsAuthenticated())
             {
-                await _httpClient.PostAsync("api/Order/PlaceOrder", null);
+                var result = await _httpClient.PostAsync("api/payment/checkout", null);
+                var url = await result.Content.ReadAsStringAsync();
+                return url;
             }
             else
             {
-                _navigationManager.NavigateTo("login");
+                return "login";
             }
         }
 
