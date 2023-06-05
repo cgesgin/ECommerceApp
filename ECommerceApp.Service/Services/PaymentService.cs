@@ -85,7 +85,8 @@ namespace ECommerceApp.Service.Services
                 {
                     var session = stripeEvent.Data.Object as Session;
                     var user = await _authService.GetUserByEmail(session.CustomerEmail);
-                    await _orderService.PlaceOrder(user.Id);
+                    var data=  await _orderService.PlaceOrder(user.Id);
+
                 }
 
                 return true;

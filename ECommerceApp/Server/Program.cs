@@ -44,6 +44,8 @@ builder.Services.AddScoped(typeof(IBasketItemRepository), typeof(BasketItemRepos
 builder.Services.AddScoped(typeof(IOrderRepository), typeof(OrderRepository));
 builder.Services.AddScoped(typeof(IOrderService), typeof(OrderService));
 builder.Services.AddScoped(typeof(IPaymentService), typeof(PaymentService));
+builder.Services.AddScoped(typeof(IAddressService), typeof(AddressService));
+builder.Services.AddScoped(typeof(IAddressRepository), typeof(AddressRepository));
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

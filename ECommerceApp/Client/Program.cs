@@ -1,6 +1,7 @@
 global using ECommerceApp.Client.Shared;
 using Blazored.LocalStorage;
 using ECommerceApp.Client;
+using ECommerceApp.Client.Services.AddressService;
 using ECommerceApp.Client.Services.AuthService;
 using ECommerceApp.Client.Services.BasketService;
 using ECommerceApp.Client.Services.CategoryService;
@@ -21,6 +22,7 @@ builder.Services.AddScoped(typeof(ICategoryService), typeof(CategoryService));
 builder.Services.AddScoped(typeof(IBasketService), typeof(BasketService));
 builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
 builder.Services.AddScoped(typeof(IOrderService), typeof(OrderService));
+builder.Services.AddScoped(typeof(IAddressService), typeof(AddressService));
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped(typeof(AuthenticationStateProvider), typeof(CostumAuthStateProvider));

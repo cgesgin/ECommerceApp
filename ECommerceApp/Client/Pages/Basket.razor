@@ -1,10 +1,12 @@
 ﻿@page "/basket"
+@using ECommerceApp.Client.Services.AuthService;
 @using ECommerceApp.Client.Services.BasketService
 @using ECommerceApp.Client.Services.OrderService;
 @using ECommerceApp.Core.Dto
 
 @inject IBasketService BasketService
 @inject IOrderService OrderService
+@inject IAuthService AuthService
 @inject NavigationManager NavigationManager
 
 <PageTitle>Sepet</PageTitle>
@@ -41,15 +43,23 @@ else
        </div>
 
     </div>
+    @if(isAuthenticated)
+    {
+        <div>
+            <h5>teslimat adresi</h5>
+            <AddressPage/>
+        </div>
+    }
     <button @onclick="PlaceOrder" class="btn alert-success float-end mt-1">Şipariş Ver</button>
 }
 @code{
     List<BasketProductDto> basketProducts = null;
-
+    bool isAuthenticated = false;
     string message = "sepetiniz boş";
 
     protected override async Task OnInitializedAsync()
     {
+        isAuthenticated = await AuthService.GetIsUserAuthentication();
         await LoadBasket();  
     }
 
