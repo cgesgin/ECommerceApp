@@ -2,6 +2,7 @@
 using ECommerceApp.Core.Repositories;
 using ECommerceApp.Core.Service;
 using ECommerceApp.Core.UnitOfWorks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -46,9 +47,9 @@ namespace ECommerceApp.Service.Services
             return true;
         }
 
-        public Task<User> GetUserByEmail(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
-            throw new NotImplementedException();
+            return await _authRepository.GetUserByEmail(email);
         }
 
         public string GetUserEmail()
@@ -132,7 +133,7 @@ namespace ECommerceApp.Service.Services
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Email),
-               // new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.Role, user.Role)
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8

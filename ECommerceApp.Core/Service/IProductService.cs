@@ -16,5 +16,10 @@ namespace ECommerceApp.Core.Service
         Task<ProductSearchResultDto> SearchProducts(string searchText,int page);
         Task<List<string>> GetProductsSearchSuggestions(string searchText);
         Task<List<Product>> GetFeaturedProducts();
+
+        Task<List<Product>> GetAdminProducts();
+        Task<Product> CreateProduct(Product product);
+        Task<Product> UpdateProduct(Product product);
+        Task<bool> DeleteProduct(int productId);
     }
 }

@@ -88,6 +88,7 @@ namespace ECommerceApp.Service.Services
 
         public async Task<List<BasketProductDto>> GetDbBasketProducts(int userId)
         {
+            
             return await GetBasketProducts(await _appDbContext.BasketItems.Where(x => x.UserId == userId).ToListAsync());
 
 

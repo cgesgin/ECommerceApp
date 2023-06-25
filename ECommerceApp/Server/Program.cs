@@ -36,6 +36,7 @@ builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
 builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 builder.Services.AddScoped(typeof(IProductService), typeof(ProductService));
 builder.Services.AddScoped(typeof(ICategoryService), typeof(CategoryService));
+builder.Services.AddScoped(typeof(ICategoryRepository), typeof(CategoryRepository));
 builder.Services.AddScoped(typeof(IBasketService), typeof(BasketService));
 builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
 builder.Services.AddScoped(typeof(IAuthRepository), typeof(AuthRepository));
@@ -43,6 +44,13 @@ builder.Services.AddScoped(typeof(IProductRepository), typeof(ProductRepository)
 builder.Services.AddScoped(typeof(IBasketItemRepository), typeof(BasketItemRepository));
 builder.Services.AddScoped(typeof(IOrderRepository), typeof(OrderRepository));
 builder.Services.AddScoped(typeof(IOrderService), typeof(OrderService));
+builder.Services.AddScoped(typeof(IPaymentService), typeof(PaymentService));
+builder.Services.AddScoped(typeof(IAddressService), typeof(AddressService));
+builder.Services.AddScoped(typeof(IProductTypeService), typeof(ProductTypeService));
+builder.Services.AddScoped(typeof(IProductTypeRepository), typeof(ProductTypeRepository));
+builder.Services.AddScoped(typeof(IAddressRepository), typeof(AddressRepository));
+
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt =>

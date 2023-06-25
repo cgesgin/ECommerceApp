@@ -1,20 +1,19 @@
 ﻿@page "/basket"
+@using ECommerceApp.Client.Services.AuthService;
 @using ECommerceApp.Client.Services.BasketService
 @using ECommerceApp.Client.Services.OrderService;
 @using ECommerceApp.Core.Dto
 
 @inject IBasketService BasketService
 @inject IOrderService OrderService
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Sepet</PageTitle>
 <h3>Sepet</h3>
 @if (basketProducts == null || basketProducts.Count==0)
 {
     <span>@message</span>
-}
-else if (orderPlaced)
-{
-    <span>Sipariş Alındı. Siparişler için <a href="orders">Tıklayınız</a></span>
 }
 else
 {
@@ -44,17 +43,23 @@ else
        </div>
 
     </div>
+    @if(isAuthenticated)
+    {
+        <div>
+            <h5>teslimat adresi</h5>
+            <AddressPage/>
+        </div>
+    }
     <button @onclick="PlaceOrder" class="btn alert-success float-end mt-1">Şipariş Ver</button>
 }
 @code{
     List<BasketProductDto> basketProducts = null;
-
+    bool isAuthenticated = false;
     string message = "sepetiniz boş";
-    bool orderPlaced = false;
 
     protected override async Task OnInitializedAsync()
     {
-        orderPlaced = false;
+        isAuthenticated = await AuthService.GetIsUserAuthentication();
         await LoadBasket();  
     }
 
@@ -84,9 +89,9 @@ else
 
     private async Task PlaceOrder()
     {
-        await OrderService.PlaceOrder();
-        await BasketService.BasketItemsCount();
-        orderPlaced = true;
+        string url = await OrderService.PlaceOrder();
+        NavigationManager.NavigateTo(url);
+
     }
 
 }

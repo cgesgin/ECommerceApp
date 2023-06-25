@@ -30,5 +30,10 @@ namespace ECommerceApp.Repository.Repositories
         {
             return await _appDbContext.Users.FindAsync(id);
         }
+
+        public async Task<User> GetUserByEmail(string email)
+        {
+            return await _appDbContext.Users.FirstOrDefaultAsync(u => u.Email.Equals(email));
+        }
     }
 }

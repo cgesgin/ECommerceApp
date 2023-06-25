@@ -21,15 +21,7 @@ namespace ECommerceApp.Server.Controllers
             _httpContextAccessor = httpContextAccessor;
 
         }
-
-        [HttpPost("PlaceOrder")]
-        public async Task<IActionResult> PlaceOrder()
-        {
-            var userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var result = await _orderService.PlaceOrder(userId);
-            return CreateActionResult(ResponseDto<bool>.Success(200, result));
-        }
-
+ 
         [HttpGet("GetOrders")]
         public async Task<IActionResult> GetOrder()
         {

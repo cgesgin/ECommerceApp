@@ -15,5 +15,11 @@ namespace ECommerceApp.Client.Services.ProductService
         Task<ResponseDto<Product>> GetByIdAsync(int id);
         Task SearchProducts(string searchText , int page);
         Task <List<string>> GetProductSearchSuggestion(string searchText);
+
+        Task GetAdminProducts();
+        Task<Product> CreateProduct(Product product);
+        Task<Product> UpdateProduct(Product product);
+        Task DeleteProduct(Product product);
+        List<Product> AdminProducts { get; set; }
     }
 }
