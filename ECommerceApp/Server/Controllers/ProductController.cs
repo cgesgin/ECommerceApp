@@ -1,6 +1,8 @@
 ﻿using ECommerceApp.Core.Dto;
 using ECommerceApp.Core.Models;
 using ECommerceApp.Core.Service;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceApp.Server.Controllers
@@ -10,9 +12,11 @@ namespace ECommerceApp.Server.Controllers
     public class ProductController : BaseController
     {
         private readonly IProductService _service;
-        public ProductController(IProductService service)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public ProductController(IProductService service, IHttpContextAccessor httpContextAccessor)
         {
             _service = service;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet]
@@ -24,7 +28,7 @@ namespace ECommerceApp.Server.Controllers
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
-        {
+        {  
             var result = await _service.GetProductWithVariantAndType(id);
             if (result==null)
             {
@@ -76,5 +80,34 @@ namespace ECommerceApp.Server.Controllers
             }
             return CreateActionResult(ResponseDto<List<Product>>.Success(200, result));
         }
+
+        [HttpGet("admin"), Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAdminProducts()
+        {
+            var result = await _service.GetAdminProducts();
+            return CreateActionResult(ResponseDto<List<Product>>.Success(200, result));
+        }
+
+        [HttpPost, Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CreateProduct(Product product)
+        {
+            var result = await _service.CreateProduct(product);
+            return CreateActionResult(ResponseDto<Product>.Success(200, result));
+        }
+
+        [HttpPut, Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateProduct(Product product)
+        {
+            var result = await _service.UpdateProduct(product);
+            return CreateActionResult(ResponseDto<Product>.Success(200, result));
+        }
+
+        [HttpDelete("{id}"), Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            var result = await _service.DeleteProduct(id);
+            return CreateActionResult(ResponseDto<bool>.Success(200, result));
+        }
+
     }
 }

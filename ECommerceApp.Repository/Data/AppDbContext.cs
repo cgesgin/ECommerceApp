@@ -30,5 +30,6 @@ namespace ECommerceApp.Repository.Data
         public DbSet<Order> Order { get; set; }
         public DbSet<OrderItem> OrderItem { get; set; }
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<Image> Images { get; set; }
     }
 }

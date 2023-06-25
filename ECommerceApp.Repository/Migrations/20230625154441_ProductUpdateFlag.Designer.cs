@@ -3,6 +3,7 @@ using System;
 using ECommerceApp.Repository.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerceApp.Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230625154441_ProductUpdateFlag")]
+    partial class ProductUpdateFlag
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,26 +127,6 @@ namespace ECommerceApp.Repository.Migrations
                             Name = "Games",
                             Visible = true
                         });
-                });
-
-            modelBuilder.Entity("ECommerceApp.Core.Models.Image", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Data")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("ECommerceApp.Core.Models.Order", b =>
@@ -396,13 +378,6 @@ namespace ECommerceApp.Repository.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ECommerceApp.Core.Models.Image", b =>
-                {
-                    b.HasOne("ECommerceApp.Core.Models.Product", null)
-                        .WithMany("Images")
-                        .HasForeignKey("ProductId");
-                });
-
             modelBuilder.Entity("ECommerceApp.Core.Models.OrderItem", b =>
                 {
                     b.HasOne("ECommerceApp.Core.Models.Order", "Order")
@@ -467,8 +442,6 @@ namespace ECommerceApp.Repository.Migrations
 
             modelBuilder.Entity("ECommerceApp.Core.Models.Product", b =>
                 {
-                    b.Navigation("Images");
-
                     b.Navigation("ProductVariants");
                 });
 

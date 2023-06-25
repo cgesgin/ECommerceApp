@@ -16,5 +16,8 @@ namespace ECommerceApp.Core.Repositories
         Task<List<Product>> SearchProducts(string searchText,int page,float pageResult);
         Task<List<string>> GetProductsSearchSuggestions(string searchText);
         Task<List<Product>> GetFeaturedProducts();
+        Task<List<Product>> GetProductsForAdmin();
+        Task<Product> UpdateProduct(Product product);
+
     }
 }

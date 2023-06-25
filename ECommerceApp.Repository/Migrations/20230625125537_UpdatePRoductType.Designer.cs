@@ -3,6 +3,7 @@ using System;
 using ECommerceApp.Repository.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerceApp.Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230625125537_UpdatePRoductType")]
+    partial class UpdatePRoductType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,26 +129,6 @@ namespace ECommerceApp.Repository.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ECommerceApp.Core.Models.Image", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Data")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Images");
-                });
-
             modelBuilder.Entity("ECommerceApp.Core.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -204,9 +186,6 @@ namespace ECommerceApp.Repository.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -222,9 +201,6 @@ namespace ECommerceApp.Repository.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<bool>("Visible")
-                        .HasColumnType("tinyint(1)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -236,34 +212,28 @@ namespace ECommerceApp.Repository.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            Deleted = false,
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                             Featured = true,
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/en/a/a4/Ready_Player_One_cover.jpg",
-                            Title = "Ready Player One-1",
-                            Visible = true
+                            Title = "Ready Player One-1"
                         },
                         new
                         {
                             Id = 2,
                             CategoryId = 1,
-                            Deleted = false,
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                             Featured = false,
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/en/a/a4/Ready_Player_One_cover.jpg",
-                            Title = "Ready Player One-2",
-                            Visible = true
+                            Title = "Ready Player One-2"
                         },
                         new
                         {
                             Id = 3,
                             CategoryId = 1,
-                            Deleted = false,
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                             Featured = true,
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/en/a/a4/Ready_Player_One_cover.jpg",
-                            Title = "Ready player one : director's Cut",
-                            Visible = true
+                            Title = "Ready player one : director's Cut"
                         });
                 });
 
@@ -307,9 +277,6 @@ namespace ECommerceApp.Repository.Migrations
                     b.Property<int>("ProductTypeId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<decimal>("OriginalPrice")
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
@@ -317,9 +284,6 @@ namespace ECommerceApp.Repository.Migrations
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 6)
                         .HasColumnType("decimal(18,6)");
-
-                    b.Property<bool>("Visible")
-                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("ProductId", "ProductTypeId");
 
@@ -332,28 +296,22 @@ namespace ECommerceApp.Repository.Migrations
                         {
                             ProductId = 1,
                             ProductTypeId = 2,
-                            Deleted = false,
                             OriginalPrice = 19.99m,
-                            Price = 9.99m,
-                            Visible = true
+                            Price = 9.99m
                         },
                         new
                         {
                             ProductId = 1,
                             ProductTypeId = 3,
-                            Deleted = false,
                             OriginalPrice = 15.99m,
-                            Price = 9.99m,
-                            Visible = true
+                            Price = 9.99m
                         },
                         new
                         {
                             ProductId = 2,
                             ProductTypeId = 3,
-                            Deleted = false,
                             OriginalPrice = 0m,
-                            Price = 9.99m,
-                            Visible = true
+                            Price = 9.99m
                         });
                 });
 
@@ -394,13 +352,6 @@ namespace ECommerceApp.Repository.Migrations
                         .HasForeignKey("ECommerceApp.Core.Models.Address", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ECommerceApp.Core.Models.Image", b =>
-                {
-                    b.HasOne("ECommerceApp.Core.Models.Product", null)
-                        .WithMany("Images")
-                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("ECommerceApp.Core.Models.OrderItem", b =>
@@ -467,8 +418,6 @@ namespace ECommerceApp.Repository.Migrations
 
             modelBuilder.Entity("ECommerceApp.Core.Models.Product", b =>
                 {
-                    b.Navigation("Images");
-
                     b.Navigation("ProductVariants");
                 });
 
